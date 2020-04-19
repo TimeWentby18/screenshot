@@ -1,4 +1,8 @@
+import javafx.stage.FileChooser;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -6,6 +10,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -212,7 +217,11 @@ public class MainFrame extends JFrame implements ActionListener{
             if(source.equals(copyButton)) {
                 doCopy(get);
             } else if(source.equals(saveButton)) {
-                doSave(get);
+                try {
+                    doSave(get);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             } else if(source.equals(closeButton)) {
                 doClose(this);
             } else if(source.equals(editButton)) {
@@ -247,13 +256,70 @@ public class MainFrame extends JFrame implements ActionListener{
             }
         };
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(content,null);
-        JLabel success = new JLabel("<html><h1><font style=\"color:rgb(143,194,106)\";>成功复制到剪切板(*^_^*)</font></h1></html>");
+        JLabel success = new JLabel("<html><h1 style=\"color:rgb(143,194,106)\">成功复制到剪切板(*^_^*)</h1></html>");
         JOptionPane.showMessageDialog(this,success,null,JOptionPane.PLAIN_MESSAGE);
     }
 
     //保存图片(未实现)
-    private void doSave(BufferedImage get) {
-        System.out.println("doSave()");
+    private void doSave(BufferedImage image) throws IOException {
+        if (image == null) {
+            JOptionPane.showMessageDialog(this,"保存的图片不能为空！","错误",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JFileChooser chooser = new JFileChooser(".");
+        chooser.addChoosableFileFilter(new JPGFilter());
+        chooser.addChoosableFileFilter(new PNGFilter());
+        chooser.addChoosableFileFilter(new BMPFilter());
+        chooser.addChoosableFileFilter(new GIFFilter());
+        if(chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File origin = chooser.getSelectedFile();
+            String fileName = origin.toString().toLowerCase();
+            String suffix = "PNG";  //默认格式为PNG
+            FileFilter filter = chooser.getFileFilter();
+            File finalFile = null;
+            if (filter instanceof JPGFilter) {
+                if (!fileName.endsWith(".jpg")) {
+                    fileName = fileName + ".jpg";
+                    finalFile = new File(fileName);
+                } else {
+                    finalFile = origin;
+                }
+                suffix = "JPG";
+            } else if (filter instanceof PNGFilter) {
+                if (!fileName.endsWith(".png")) {
+                    fileName = fileName + ".png";
+                    finalFile = new File(fileName);
+                } else {
+                    finalFile = origin;
+                }
+                suffix = "PNG";
+            } else if (filter instanceof BMPFilter) {
+                if (!fileName.endsWith(".bmp")) {
+                    fileName = fileName + ".bmp";
+                    finalFile = new File(fileName);
+                } else {
+                    finalFile = origin;
+                }
+                suffix = "BMP";
+            } else if (filter instanceof GIFFilter) {
+                if (!fileName.endsWith(".gif")) {
+                    fileName = fileName + ".gif";
+                    finalFile = new File(fileName);
+                } else {
+                    finalFile = origin;
+                }
+                suffix = "GIF";
+            } else {
+                fileName = fileName + ".png";
+                finalFile = new File(fileName);
+            }
+            if (ImageIO.write(image,suffix,finalFile)) {
+                JLabel success = new JLabel("<html><h1 style=\"color:rgb(143,194,106)\">保存成功(*^_^*)</h1></html>");
+                JOptionPane.showMessageDialog(this,success,null, JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,"保存失败！","错误",JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     //关闭
@@ -266,6 +332,62 @@ public class MainFrame extends JFrame implements ActionListener{
     //编辑图片(未实现)
     private void doEdit(BufferedImage get) {
         System.out.println("doEdit()");
+    }
+
+    //JPG过滤器
+    private static class JPGFilter extends FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".jpg"));
+        }
+
+        @Override
+        public String getDescription() {
+            return "*.JPG(JPG图像)";
+        }
+    }
+
+    //PNG过滤器
+    private static class PNGFilter extends FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".png"));
+        }
+
+        @Override
+        public String getDescription() {
+            return "*.PNG(PNG图像)";
+        }
+    }
+
+    //BMP过滤器
+    private static class BMPFilter extends FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".bmp"));
+        }
+
+        @Override
+        public String getDescription() {
+            return "*.BMP(BMP图像)";
+        }
+    }
+
+    //GIF过滤器
+    private static class GIFFilter extends FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".gif"));
+        }
+
+        @Override
+        public String getDescription() {
+            return "*.GIF(GIF图像)";
+        }
     }
 
     //主函数
