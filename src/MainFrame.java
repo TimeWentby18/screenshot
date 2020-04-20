@@ -256,7 +256,7 @@ public class MainFrame extends JFrame implements ActionListener{
         JOptionPane.showMessageDialog(this,success,null,JOptionPane.PLAIN_MESSAGE);
     }
 
-    //保存图片(未实现)
+    //保存图片
     private void doSave(BufferedImage image) {
         if (image == null) {
             JOptionPane.showMessageDialog(this,"保存的图片不能为空！","错误",JOptionPane.ERROR_MESSAGE);
