@@ -217,11 +217,7 @@ public class MainFrame extends JFrame implements ActionListener{
             if(source.equals(copyButton)) {
                 doCopy(get);
             } else if(source.equals(saveButton)) {
-                try {
-                    doSave(get);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                doSave(get);
             } else if(source.equals(closeButton)) {
                 doClose(this);
             } else if(source.equals(editButton)) {
@@ -261,7 +257,7 @@ public class MainFrame extends JFrame implements ActionListener{
     }
 
     //保存图片(未实现)
-    private void doSave(BufferedImage image) throws IOException {
+    private void doSave(BufferedImage image) {
         if (image == null) {
             JOptionPane.showMessageDialog(this,"保存的图片不能为空！","错误",JOptionPane.ERROR_MESSAGE);
             return;
@@ -313,11 +309,15 @@ public class MainFrame extends JFrame implements ActionListener{
                 fileName = fileName + ".png";
                 finalFile = new File(fileName);
             }
-            if (ImageIO.write(image,suffix,finalFile)) {
-                JLabel success = new JLabel("<html><h1 style=\"color:rgb(143,194,106)\">保存成功(*^_^*)</h1></html>");
-                JOptionPane.showMessageDialog(this,success,null, JOptionPane.PLAIN_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,"保存失败！","错误",JOptionPane.ERROR_MESSAGE);
+            try {
+                if (ImageIO.write(image,suffix,finalFile)) {
+                    JLabel success = new JLabel("<html><h1 style=\"color:rgb(143,194,106)\">保存成功(*^_^*)</h1></html>");
+                    JOptionPane.showMessageDialog(this,success,null, JOptionPane.PLAIN_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this,"保存失败！","错误",JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -330,8 +330,10 @@ public class MainFrame extends JFrame implements ActionListener{
     }
 
     //编辑图片(未实现)
-    private void doEdit(BufferedImage get) {
-        System.out.println("doEdit()");
+    private void doEdit(BufferedImage image) {
+        doSave(image);
+        this.setVisible(false);
+        //在此调出编辑界面
     }
 
     //JPG过滤器
