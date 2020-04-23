@@ -122,37 +122,29 @@ class PicPanel extends JPanel implements ActionListener {
             String fileName = origin.toString().toLowerCase();
             String suffix = "PNG";  //默认格式为PNG
             FileFilter filter = chooser.getFileFilter();
-            File finalFile;
+            File finalFile = origin;
             if (filter instanceof MyFilter.JPGFilter) {
                 if (!fileName.endsWith(".jpg")) {
                     fileName = fileName + ".jpg";
                     finalFile = new File(fileName);
-                } else {
-                    finalFile = origin;
                 }
                 suffix = "JPG";
             } else if (filter instanceof MyFilter.PNGFilter) {
                 if (!fileName.endsWith(".png")) {
                     fileName = fileName + ".png";
                     finalFile = new File(fileName);
-                } else {
-                    finalFile = origin;
                 }
                 suffix = "PNG";
             } else if (filter instanceof MyFilter.BMPFilter) {
                 if (!fileName.endsWith(".bmp")) {
                     fileName = fileName + ".bmp";
                     finalFile = new File(fileName);
-                } else {
-                    finalFile = origin;
                 }
                 suffix = "BMP";
             } else if (filter instanceof MyFilter.GIFFilter) {
                 if (!fileName.endsWith(".gif")) {
                     fileName = fileName + ".gif";
                     finalFile = new File(fileName);
-                } else {
-                    finalFile = origin;
                 }
                 suffix = "GIF";
             } else {
@@ -161,7 +153,7 @@ class PicPanel extends JPanel implements ActionListener {
             }
             try {
                 if (ImageIO.write(image, suffix, finalFile)) {
-                    JLabel success = new JLabel("<html><h1 style=\"color:rgb(143,194,106)\">保存成功(*^_^*)</h1></html>");
+                    JLabel success = new JLabel("<html><h1 style=\"color:rgb(143,194,106)\">图片保存成功(*^_^*)</h1></html>");
                     JOptionPane.showMessageDialog(MainFrame.getInstance(), success, null, JOptionPane.PLAIN_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(MainFrame.getInstance(), "保存失败！", "错误", JOptionPane.ERROR_MESSAGE);
