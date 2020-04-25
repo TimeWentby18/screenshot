@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //添加到JTabbedPane中的图片面板，包含自己的按钮和事件
 class PicPanel extends JPanel implements ActionListener {
@@ -117,6 +119,10 @@ class PicPanel extends JPanel implements ActionListener {
         chooser.addChoosableFileFilter(new MyFilter.PNGFilter());
         chooser.addChoosableFileFilter(new MyFilter.BMPFilter());
         chooser.addChoosableFileFilter(new MyFilter.GIFFilter());
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String defaultName = sdf.format(new Date());
+        chooser.setSelectedFile(new File(defaultName));
+        chooser.setDialogTitle("保存图片");
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File origin = chooser.getSelectedFile();
             String fileName = origin.toString().toLowerCase();
