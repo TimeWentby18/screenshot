@@ -8,7 +8,7 @@ public class MyFilter {
 
         @Override
         public boolean accept(File f) {
-            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".jpg"));
+            return (f.isFile() && f.toString().toLowerCase().endsWith(".jpg"));
         }
 
         @Override
@@ -22,7 +22,7 @@ public class MyFilter {
 
         @Override
         public boolean accept(File f) {
-            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".png"));
+            return (f.isFile() && f.toString().toLowerCase().endsWith(".png"));
         }
 
         @Override
@@ -36,7 +36,7 @@ public class MyFilter {
 
         @Override
         public boolean accept(File f) {
-            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".bmp"));
+            return (f.isFile() && f.toString().toLowerCase().endsWith(".bmp"));
         }
 
         @Override
@@ -50,7 +50,7 @@ public class MyFilter {
 
         @Override
         public boolean accept(File f) {
-            return (f.isDirectory() && f.toString().toLowerCase().endsWith(".gif"));
+            return (f.isFile() && f.toString().toLowerCase().endsWith(".gif"));
         }
 
         @Override
