@@ -11,10 +11,10 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton startButton, quitButton; //开始和退出按钮
     private JLabel welcome;   //初始的欢迎标签
     private JTabbedPane jtp;  //标签面板，显示多张截图预览
-    private BufferedImage get;  //获取的截屏图像(原始图像)
+    public static BufferedImage get;  //获取的截屏图像(原始图像)
     private int index = 0;   //图片索引，每截一张图就加一
 
-    static MainFrame getInstance() {
+    public static MainFrame getInstance() {
         return mainFrame;
     }
 
@@ -119,15 +119,20 @@ public class MainFrame extends JFrame implements ActionListener {
             Dimension di = toolkit.getScreenSize();
             Rectangle rec = new Rectangle(0, 0, di.width, di.height);
             BufferedImage image = robot.createScreenCapture(rec);
-            get = image.getSubimage(200, 300, 600, 500);  //获取截图需要在这里实现
-            update();
+            JFrame jf = new JFrame();  //截图框选界面
+            CutImg cutImg = new CutImg(jf, image, di.width, di.height);
+            jf.getContentPane().add(cutImg, BorderLayout.CENTER);
+            jf.setUndecorated(true);  //这里应为true，为调试方便设为false
+            jf.setSize(di);
+            jf.setVisible(true);
+            jf.setAlwaysOnTop(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //更新主界面
-    private void update() {
+    public void update() {
         this.setVisible(true);  //让窗口重新显示
         SwingUtilities.updateComponentTreeUI(this);  //更新组件
         if (get != null) {
