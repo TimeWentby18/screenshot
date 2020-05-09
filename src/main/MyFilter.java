@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 

@@ -1,3 +1,5 @@
+package main;
+
 public class States{
     final int DRAG_UP_LEFT = 0;
     final int DRAG_UP = 1;

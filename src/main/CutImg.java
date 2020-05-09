@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.MouseEvent;
@@ -28,31 +30,41 @@ public class CutImg extends JPanel implements MouseListener, MouseMotionListener
         this.addMouseMotionListener(this);
     }
 
+    public void makeChange() {
+        int x, y;
+        if (x1 > x2) {
+            x = x1;
+            x1 = x2;
+            x2 = x;
+        }
+        if (y1 > y2) {
+            y = y1;
+            y1 = y2;
+            y2 = y;
+        }
+    }
     public void setPoint() {
         //设置各个方框的范围
         int x = (x1+x2)/2;
         int y = (y1+y2)/2;
-        int xmax = Math.max(x1, x2);
-        int ymax = Math.max(y1, y2);
-        int xmin = Math.min(x1, x2);
-        int ymin = Math.min(y1, y2);
-        positions[0] = new Rectangle(xmin-5, ymin-5, 10, 10); //左上角方块
+        makeChange();
+        positions[0] = new Rectangle(x1-5, y1-5, 10, 10); //左上角方块
         cursors[0] = new Cursor(Cursor.NW_RESIZE_CURSOR);
-        positions[1] = new Rectangle(x-5, ymin-5, 10, 10);
+        positions[1] = new Rectangle(x-5, y1-5, 10, 10);
         cursors[1] = new Cursor(Cursor.N_RESIZE_CURSOR);
-        positions[2] = new Rectangle(xmax-5, ymin-5, 10, 10);
+        positions[2] = new Rectangle(x2-5, y1-5, 10, 10);
         cursors[2] = new Cursor(Cursor.NE_RESIZE_CURSOR);
-        positions[3] = new Rectangle(xmin-5, y-5, 10, 10);
+        positions[3] = new Rectangle(x1-5, y-5, 10, 10);
         cursors[3] = new Cursor(Cursor.W_RESIZE_CURSOR);
-        positions[4] = new Rectangle(xmax-5, y-5, 10, 10);
+        positions[4] = new Rectangle(x2-5, y-5, 10, 10);
         cursors[4] = new Cursor(Cursor.E_RESIZE_CURSOR);
-        positions[5] = new Rectangle(xmin-5, ymax-5, 10, 10);
+        positions[5] = new Rectangle(x1-5, y2-5, 10, 10);
         cursors[5] = new Cursor(Cursor.SW_RESIZE_CURSOR);
-        positions[6] = new Rectangle(x-5, ymax-5, 10, 10);
+        positions[6] = new Rectangle(x-5, y2-5, 10, 10);
         cursors[6] = new Cursor(Cursor.S_RESIZE_CURSOR);
-        positions[7] = new Rectangle(xmax-5, ymax-5, 10, 10);
+        positions[7] = new Rectangle(x2-5, y2-5, 10, 10);
         cursors[7] = new Cursor(Cursor.SE_RESIZE_CURSOR);
-        selected = new Rectangle(xmin, ymin, Math.abs(x2-x1)-5, Math.abs(y2-y1)-5);
+        selected = new Rectangle(x1, y1, Math.abs(x2-x1)-5, Math.abs(y2-y1)-5);
     }
 
 
@@ -130,13 +142,13 @@ public class CutImg extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            if(currentState == states.DRAG_MOVE) {
+        if (e.isPopupTrigger()) { //菜单弹出
+            if(currentState == states.DRAG_MOVE) { //先将起点设置于左上角屏幕
                 x1 = 0;
                 y1 = 0;
                 x2 = 0;
                 y2 = 0;
-                repaint();
+                this.repaint();
             } else {
                 jf.dispose();
                 MainFrame.getInstance().update();
@@ -202,6 +214,7 @@ public class CutImg extends JPanel implements MouseListener, MouseMotionListener
             x2 = curP.x;
             y2 = curP.y;
         }
+        makeChange();
         this.repaint();
     }
 }
