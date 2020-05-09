@@ -1,5 +1,7 @@
 package main;
 
+import edit.WatermarkFrame;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -178,10 +180,11 @@ class PicPanel extends JPanel implements ActionListener {
         System.gc();
     }
 
-    //编辑图片(未实现)
+    //编辑图片
     void doEdit(BufferedImage image) {
         doSave(image);
         mainFrame.setVisible(false);
         //在此调出编辑界面
+        WatermarkFrame e= WatermarkFrame.getInstance();
     }
 }
