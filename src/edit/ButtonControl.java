@@ -8,6 +8,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edit.ElseMethod;
 import edit.OperateButton.ButtonStyle;
+import main.MainFrame;
 
 import java.awt.image.BufferedImage;
 
@@ -45,21 +46,25 @@ public class ButtonControl implements ActionListener {
 		}else if(style.equals(ButtonStyle.preview)){
 			//JOptionPane.showMessageDialog(null,"预览操作成功");
 			String PreviewImage=getPreviewImagePath();
-			BufferedImage buffing=addWaterMark(PreviewImage);
+			BufferedImage buffing=addWaterMark(0,PreviewImage);
 			WFrame.setEastPanel(buffing);
 			//WFrame.getEastJPanel().add(new JButton("登陆"));
 			//WFrame.add(WFrame.getEastJPanel(),BorderLayout.EAST);
 		}else if(style.equals(ButtonStyle.confirm)){
-			//JOptionPane.showMessageDialog(null,"确认操作成功！");
+			JOptionPane.showMessageDialog(null,"确认操作成功！");
 			String PreviewImage=getPreviewImagePath();
 			//生成预览图片的文件对象
 			//File file=new File(PreviewImage);
 			//生成预览图片的一个缓冲图像
-			BufferedImage buffing=addWaterMark(PreviewImage);
+			BufferedImage buffing=addWaterMark(1,PreviewImage);
 			ImageSaveToDES(buffing,WFrame.getSavePath());
 			WFrame.getWaterProgress().setValue(WFrame.getWaterProgress().getMaximum());
+		}else if(style.equals(ButtonStyle.more)) {
+			JOptionPane.showMessageDialog(null,"敬请期待");
 		}else if(style.equals(ButtonStyle.sighOut)) {
 			JOptionPane.showMessageDialog(null,"退出操作成功！");
+			WFrame.setVisible(false);
+			MainFrame.getInstance().setVisible(true);
 		}
 	}
 	
@@ -73,9 +78,11 @@ public class ButtonControl implements ActionListener {
 		
 		FileChooser =new JFileChooser();
 		FileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		FileChooser.addChoosableFileFilter(new FileNameExtensionFilter("图片文件(*.bmp, *.gif, *.jpg, *.jpeg,)", "bmp",
-				"gif", "jpg", "jpeg"));
-		FileChooser.setFileFilter(new  FileNameExtensionFilter("png文件(*.png)","png"));
+		FileChooser.addChoosableFileFilter(new FileNameExtensionFilter("gif文件(*.gif)","gif"));
+		FileChooser.addChoosableFileFilter(new FileNameExtensionFilter("jpeg文件(*.jpeg)","jpeg"));
+		FileChooser.addChoosableFileFilter(new FileNameExtensionFilter("png文件(*.png)","png"));
+		FileChooser.setFileFilter(new  FileNameExtensionFilter("jpg文件(*.jpg)","jpg"));
+		
 		
 		int result=FileChooser.showOpenDialog(null);
 		if(result==JFileChooser.APPROVE_OPTION) {
@@ -116,13 +123,13 @@ public class ButtonControl implements ActionListener {
 		return WFrame.getExportPath();
 	}
  
-	public  BufferedImage addWaterMark(String filePath) {
+	public  BufferedImage addWaterMark(int ReviewOrConfirm,String filePath) {
 		Font font=new Font("楷体",WFrame.getFontStyle(),WFrame.getFontSize());
 		Color color=WFrame.getFONTColor();
 		int toward=WFrame.getFontToward();
 		String mark=WFrame.getFONTContent();
 		float alpha= WFrame.getWaterMarkAlpha();
-		BufferedImage BuffImage=AddWaterMarkGra.AddwaterMark(filePath, font, color, toward, mark, alpha);
+		BufferedImage BuffImage=AddWaterMarkGra.AddwaterMark(ReviewOrConfirm,filePath, font, color, toward, mark, alpha);
 		return BuffImage;
 	}
 	
@@ -148,6 +155,6 @@ public class ButtonControl implements ActionListener {
 	 */
 	public BufferedImage addWaterMark2() {
 		String PreviewImage=getPreviewImagePath();
-		return addWaterMark(PreviewImage);
+		return addWaterMark(1,PreviewImage);
 	}
 }

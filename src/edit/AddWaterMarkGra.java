@@ -39,9 +39,9 @@ public class AddWaterMarkGra {
 	 * @param alpha
 	 * @return  返回一个已经对图片缓冲流进行操作的BufferedImage对象，输出参数改变
 	 */
-	public static BufferedImage AddwaterMark(String filePath, Font font,
+	public static BufferedImage AddwaterMark(int ReviewOrConfirm,String filePath, Font font,
 			Color color, int toward, String mark, float alpha) {
-		BufferedImage buffImage=Addwatermark(new File(filePath),  font,
+		BufferedImage buffImage=Addwatermark(ReviewOrConfirm,new File(filePath),  font,
 				 color, toward,mark,  alpha);
 		return buffImage;
 	}
@@ -55,9 +55,9 @@ public class AddWaterMarkGra {
 	 * @param alpha
 	 * @return 返回一个已经对图片缓冲流进行操作的BufferedImage对象
 	 */
-	public static BufferedImage Addwatermark(File file, Font font,
+	public static BufferedImage Addwatermark(int ReviewOrConfirm,File file, Font font,
 			Color color, int toward, String mark, float alpha) {
-		BufferedImage buffImage=GetMyBufferedImg(file);
+		BufferedImage buffImage=GetMyBufferedImg(ReviewOrConfirm,file);
 		Graphics2D g2d=buffImage.createGraphics();		
 		//设置水印画笔的各种参数
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -85,18 +85,24 @@ public class AddWaterMarkGra {
 	} 
 	
 	//private static BufferedImage GetMyBufferedImg(File file,float scale) {
-	    private static BufferedImage GetMyBufferedImg(File file) {
+	    private static BufferedImage GetMyBufferedImg(int ReviewOrConfirm,File file) {
 		//取得文件的Image实例，用于取得图片的宽与高以及各种属性，以用来初始化可操作BufferedImage对象
 		Image image=GetMyImage(file);
 		BufferedImage BuffImage=null;
+		int width;
+	 	int heigth;
 		try {
 			BuffImage=ImageIO.read(file);
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		//获取抽象lmage的高和宽
-		int width=image.getWidth(null);
-	 	int heigth=image.getHeight(null);
+		//获取抽象lmage的高和宽i
+		if(ReviewOrConfirm==1) {
+		 width=image.getWidth(null);
+	 	 heigth=image.getHeight(null);}else{
+	 		width=375;
+		 	 heigth=243;
+	 	}
 	 	BuffImage= new BufferedImage(width, heigth, BufferedImage.TYPE_INT_RGB);
 		//设置画笔,在已经建立好的BuffImage上直接操作
 	    Graphics2D g2d=BuffImage.createGraphics();

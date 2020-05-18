@@ -28,7 +28,7 @@ public class ElseMethod {
 		int toward=WFrame.getFontToward();
 		String mark=WFrame.getFONTContent();
 		float alpha= WFrame.getWaterMarkAlpha();
-		BufferedImage BuffImage=AddWaterMarkGra.AddwaterMark(filePath, font, color, toward, mark, alpha);
+		BufferedImage BuffImage=AddWaterMarkGra.AddwaterMark(1,filePath, font, color, toward, mark, alpha);
 		return BuffImage;
 		//String PreviewImage=getPreviewImagePath();
 		//return addWaterMark(PreviewImage);

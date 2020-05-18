@@ -33,20 +33,6 @@ public class MyFilter {
         }
     }
 
-    //BMP过滤器
-    static class BMPFilter extends FileFilter {
-
-        @Override
-        public boolean accept(File f) {
-            return (f.isFile() && f.toString().toLowerCase().endsWith(".bmp"));
-        }
-
-        @Override
-        public String getDescription() {
-            return "*.BMP(BMP图像)";
-        }
-    }
-
     //GIF过滤器
     static class GIFFilter extends FileFilter {
 

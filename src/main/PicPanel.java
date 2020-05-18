@@ -121,7 +121,6 @@ class PicPanel extends JPanel implements ActionListener {
         JFileChooser chooser = new JFileChooser(".");
         chooser.addChoosableFileFilter(new MyFilter.JPGFilter());
         chooser.addChoosableFileFilter(new MyFilter.PNGFilter());
-        chooser.addChoosableFileFilter(new MyFilter.BMPFilter());
         chooser.addChoosableFileFilter(new MyFilter.GIFFilter());
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String defaultName = sdf.format(new Date());
@@ -145,12 +144,6 @@ class PicPanel extends JPanel implements ActionListener {
                     finalFile = new File(fileName);
                 }
                 suffix = "PNG";
-            } else if (filter instanceof MyFilter.BMPFilter) {
-                if (!fileName.endsWith(".bmp")) {
-                    fileName = fileName + ".bmp";
-                    finalFile = new File(fileName);
-                }
-                suffix = "BMP";
             } else if (filter instanceof MyFilter.GIFFilter) {
                 if (!fileName.endsWith(".gif")) {
                     fileName = fileName + ".gif";
@@ -186,5 +179,6 @@ class PicPanel extends JPanel implements ActionListener {
         mainFrame.setVisible(false);
         //在此调出编辑界面
         WatermarkFrame e= WatermarkFrame.getInstance();
+        e.setVisible(true);
     }
 }
